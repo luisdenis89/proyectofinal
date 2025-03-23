@@ -1,0 +1,109 @@
+🔹 1. Cargar y preparar los datos
+✅ Leer el archivo CSV
+✅ Normal
+✅datetime
+
+Pio
+
+Copiar
+
+Editar
+import pandas as pd
+
+# Cargar el archivo
+file_path = "Sales.csv"  # Asegúrate de usar la ruta correcta
+df = pd.read_csv(file_path)
+
+# Normalizar nombres de columnas (minúsculas y sin espacios)
+df.columns = df.columns.str.lower().str.replace(" ", "_")
+
+# Convertir fechas a formato datetime
+df["order_date"] = pd.to_datetime(df["order_date"], errors="coerce")
+df["delivery_date"] = pd.to_datetime(df["delivery_date"], errors="coerce")
+
+🔹 2. Estadísticas Generales
+✅ Re
+
+pitón
+
+Copiar
+
+Editar
+# Resumen estadístico de las variables numéricas
+stats_summary = df.describe()
+print(stats_summary)
+
+🔹 3. Productos Más Vendidos
+✅ Sumar la cantidad de productos vendidos
+✅
+
+pag
+
+Copiar
+
+Editar
+# Sumar ventas por producto y obtener los 5 más vendidos
+top_products = df.groupby("productkey")["quantity"].sum().nlargest(5)
+print(top_products)
+🔹 4. Clientes con Más Órdenes
+✅ Contar cuantas veces aparece cada cliente
+✅
+
+pito
+
+Copiar
+
+Editar
+# Contar órdenes por cliente y obtener los 5 principales
+top_customers = df["customerkey"].value_counts().head(5)
+print(top_customers)
+🔹 5. Distribución de Ventas por Moneda
+✅ Contar la cantidad de
+
+pitón
+
+Copiar
+
+Editar
+# Contar ventas por código de moneda
+currency_distribution = df["currency_code"].value_counts()
+print(currency_distribution)
+🔹 6. Análisis de Órdenes por Año
+✅ Extraer el año de order_date
+✅ Co
+
+pitón
+
+Copiar
+
+Editar
+# Contar órdenes por año
+order_dates = df["order_date"].dt.year.value_counts().sort_index()
+print(order_dates)
+🔹 7. Análisis de Entregas por Año
+✅ Extraer el año dedelivery_date
+✅ Desventajas
+
+pitón
+
+Copiar
+
+Editar
+# Contar entregas por año (eliminando valores nulos)
+delivery_dates = df["delivery_date"].dropna().dt.year.value_counts().sort_index()
+print(delivery_dates)
+🔹 8. Cálculo del Tiempo Promedio de Entrega
+✅ Reiniciardelivery_date- `order_date
+✅ Calcular el
+
+pag
+
+Copiar
+
+Editar
+# Calcular tiempo de entrega en días
+df["delivery_time"] = (df["delivery_date"] - df["order_date"]).dt.days
+
+# Calcular el promedio de días de entrega
+average_delivery_time = df["delivery_time"].mean()
+print("Tiempo promedio de entrega:", average_delivery_time, "días")
